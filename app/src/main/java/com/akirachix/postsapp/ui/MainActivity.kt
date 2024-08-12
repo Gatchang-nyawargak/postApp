@@ -1,5 +1,6 @@
 package com.akirachix.postsapp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
@@ -15,10 +16,9 @@ import com.akirachix.postsapp.viewmodel.PostsViewModel
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     val postsViewModel: PostsViewModel by viewModels()
-    val TAG = "MAINACTIVTYTAG"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "ONCREATE")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         postsViewModel.fetchPosts()
@@ -32,8 +32,11 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         postsViewModel.postsLiveData.observe(this, Observer { postsList->
             displayPosts(postsList)
-            Log.d(TAG, "ONRESUME")
+
         })
+        binding.fabAddPost.setOnClickListener{
+            startActivity(Intent(this, CreatePostActivity::class.java))
+        }
 
         postsViewModel.errorLiveData.observe(this, Observer { error->
             Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
@@ -47,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart(){
         super.onStart()
-        Log.d(TAG, "MAINACTIVITYTAG ONSTART")
+
     }
 
     //    override fun onResume(){
@@ -56,16 +59,16 @@ class MainActivity : AppCompatActivity() {
 //    }
     override fun onPause() {
         super.onPause()
-        Log.d(TAG, "MAINACTIVITYTAG ONPAUSE")
+
     }
     override fun onStop() {
         super.onStop()
-        Log.d(TAG, "MAINACTIVITYTAG ONSTOP")
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "onDestroy")
+
     }
 
     fun displayPosts(posts: List<Posts>){
