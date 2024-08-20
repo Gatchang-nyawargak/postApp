@@ -36,4 +36,10 @@ class PostsRepository {
             apiClient.createPost(postRequest)
         }
     }
+    suspend fun createComment(postId: Int, commentText: String) {
+        return withContext(Dispatchers.IO) {
+            apiClient.createComment(postId, commentText)
+        }
+    }
+
 }

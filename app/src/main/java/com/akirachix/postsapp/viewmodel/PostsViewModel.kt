@@ -3,6 +3,7 @@ package com.akirachix.postsapp.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.akirachix.postsapp.model.CommentRequest
 import com.akirachix.postsapp.model.Comments
 import com.akirachix.postsapp.model.PostRequest
 import com.akirachix.postsapp.repository.PostsRepository
@@ -16,6 +17,8 @@ class PostsViewModel: ViewModel() {
     val postLiveData = MutableLiveData<Posts>()
     val commentsLiveData = MutableLiveData<List<Comments>>()
     val createPostLiveData = MutableLiveData<String>()
+    val commentCreatedLiveData = MutableLiveData<String>()
+
 
     fun fetchPosts(){
         viewModelScope.launch {
@@ -52,5 +55,18 @@ class PostsViewModel: ViewModel() {
                 errorLiveData.postValue(response.errorBody()?.string())
             }
         }
+    }
+
+    fun createComment(postId: Int, commentText: String) {
+        viewModelScope.launch {
+            val response = postsRepo.fetchComments(postId)
+            if (response.isSuccessful){
+                commentCreatedLiveData.postValue("Comment created  successfully")
+            }
+            else{
+                errorLiveData.postValue(response.errorBody()?.string())
+            }
+        }
+
     }
 }

@@ -2,7 +2,6 @@ package com.akirachix.postsapp.api
 import com.akirachix.postsapp.model.Comments
 import com.akirachix.postsapp.model.PostRequest
 import com.akirachix.postsapp.model.Posts
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -21,4 +20,7 @@ interface PostsApiInterface {
 
     @POST("/posts")
     suspend fun createPost(@Body postRequest: PostRequest): Response<Posts>
+    suspend fun createComment(
+        postId: Int, @Body commentRequest: String
+    ): Response<Comments>
 }
